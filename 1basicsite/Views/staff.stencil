@@ -1,0 +1,22 @@
+{% extends "master.stencil" %}
+{% block title %}Staff{% endblock %}
+{% block body %}
+{% if name %}
+  <h1>{{ name|capitalize }}</h1>
+  <p>{{ bio }}</p>
+{% else %}
+{% if main %}
+    <h1>Check out our staff!</h1>
+{% else %}
+    <h1>Unknown Staff Member</h1>
+    <p>We don't recognize that person!</p>
+{% endif %}
+{% endif %}
+
+<p> Choose a staff member to view: </p>
+<ul>
+{% for person in people %}
+<li><a href="/staff/{{ person }}">{{ person|capitalize }}</a></li>
+{% endfor %}
+<ul>
+{% endblock %}
