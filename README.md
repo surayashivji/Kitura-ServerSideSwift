@@ -5,11 +5,11 @@
 1. Starter Site
 	* **Description:** Simple site that has dummy pages for the home, contact, and staff
 	* **Outcomes:** setting up the server, integrating Kitura with project, using the swift package manager, templating in Swift, logging
-	* **[Folder](https://github.com/surayashivji/KituraProgress/)**
-2. Name
-	* **Description:** 
+	* **[Code](https://github.com/surayashivji/KituraProgress/tree/master/1basicsite)**
+2. VotingAPI
+	* **Description:** system that allows users to make topics to vote on and cast their own votes.
 	* **Outcomes:** 
-	* **[Folder](https://github.com/surayashivji/KituraProgress/)**
+	* **[Code](https://github.com/surayashivji/KituraProgress/tree/master/2votingapi)**
 
 ## Credits
 * [Kitura](https://github.com/IBM-Swift/Kitura) - IBM's Swift web framework and HTTP server.
