@@ -16,4 +16,4 @@
 * [Helium Logger](https://github.com/IBM-Swift/HeliumLogger) - lightweight logging framework for Swift.
 * [Stencil](https://github.com/IBM-Swift/Kitura-StencilTemplateEngine) - templating language for Swift.
 * [CouchDB](https://github.com/IBM-Swift/Kitura-CouchDB) - NoSQL database
-* [Bootstrap](http://getbootstrap.com/) - front-end framework
+* [Bootstrap](http://getbootstrap.com/) - CSS
