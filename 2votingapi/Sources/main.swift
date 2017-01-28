@@ -17,6 +17,13 @@ let database = databaseClient.database("polls")
 
 // routes
 
+extension String {
+    func removeHTMLEncoding() -> String {
+        let result = self.replacingOccurrences(of: "+", with: " ")
+        return result.removingPercentEncoding ?? result
+    }
+}
+
 // get request for all polls
 router.get("/polls/list") {
     request, response, next in
@@ -80,6 +87,7 @@ router.post("/polls/create") {
     // request -- has a 'body' property that contains the parsed body
     // -- so we dont know type of data sent yet, but we can check it exists
     
+    // 2: check we have data submitted
     // CHECK THAT BODY EXISTS:
     // remember to never trust user data! (secure client, secure server too)
     // check and unwrap the body parameter safely!!
@@ -89,7 +97,80 @@ router.post("/polls/create") {
         return
     }
     
-    //n 
+    // 3: try and pull out url-encoded values from submission
+    // pull out url encoded values from user's submission
+    // kitura stores parsed body using an enum with associated value
+    // since we dont know how / in what form kitura will store the body (ie json, swiftyjson, urlenceded) we do a check
+    
+    // this says: check that values is set to the .urlEncoded valeu -- if so set its value into
+    // constant called body
+    // so this unwraps value into a variable (body) and checks for specific enum value
+    guard case .urlEncoded(let body) = values else {
+        try response.status(.badRequest).end()
+        return
+    }
+    
+    // 4: array of fields to check
+    // so now we have body = dictionary containing keys/values submitted to route
+    // array of fields we want to look for (what body would theoretically have, depends on user input)
+    let fields = ["title", "option1", "option2"]
+    
+    var poll = [String: Any]()
+    
+    for field in fields {
+        // check that field exists, and remove any whitespce if it does
+        if let value = body[field]?.trimmingCharacters(in: .whitespacesAndNewlines) {
+            /// make sure it has at least one character
+            if value.characters.count > 0 {
+                // add it to list of parsed values
+                poll[field] = value.removeHTMLEncoding() // string (value) calling removeHTMLEncoding cuz we exntended String class to use it
+                // go back to beginning of loop now
+                
+                // it exists! so go to next vlaue
+                continue
+            }
+        }
+        
+        // value doesnt exist, send error & exit
+        // one or more fields not there, get out
+        try response.status(.badRequest).end()
+        return
+    }
+    
+    // successsfully validated user's info -- now we can create a couchDB document! (to store the data)
+    
+    // fill in default values for vote counts (they start at 0, remmember that user just created a poll)
+    poll["votes1"] = 0
+    poll["votes2"] = 0
+    
+    // convert the dictionary to json, which is what couchdb takes in
+    let json = JSON(poll)
+    
+    database.create(json) { id, revision, doc, error in
+        defer { next() }
+        
+        if let id = id {
+            // document made successfully! return it to user
+            
+            let status = ["status": "ok", "id": id]
+            let result = ["result": status]
+            let json = JSON(result)
+            
+            response.status(.OK).send(json: json)
+            
+        } else {
+            // something went wrong - show what / try and find out what 
+            let errorMsg = error?.localizedDescription ?? "Unkown error"
+            let status = ["status": "error",
+                          "message": errorMsg]
+            let result = ["result": status]
+            let json = JSON(result)
+            
+            // show internal server error / we know its not client problem cuz we already
+            // validated all the data
+            response.status(.internalServerError).send(json: json)
+        }
+    }
 }
 
 // vote on a poll
