@@ -8,7 +8,7 @@
 	* **[Code](https://github.com/surayashivji/KituraProgress/tree/master/1basicsite)**
 2. VotingAPI
 	* **Description:** system that allows users to make topics to vote on and cast their own votes.
-	* **Outcomes:** building an API with Swift, learning to use CouchDB, understanding the concepts behind many typical Swift features 
+	* **Outcomes:** building an API with Swift, learning to use CouchDB, understanding the concepts behind many typical Swift features, interfacing API from front end, techniques for blocking SQL injection / dealing with URL encoding
 	* **[Code](https://github.com/surayashivji/KituraProgress/tree/master/2votingapi)**
 
 ## Credits

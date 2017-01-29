@@ -176,6 +176,76 @@ router.post("/polls/create") {
 // vote on a poll
 router.post("/polls/vote/:pollid/:option") {
     request, response, next in
+    
+    
+    // check that both parameters have the values
+    // response - what we send back to user
+    // request - what user sent in to us
+    
+    // step 1: check that the parameters exist so they did submit values
+    guard let poll = request.parameters["pollid"],
+        let option = request.parameters["option"] else {
+            try response.status(.badRequest).end()
+            return
+    }
+    
+    // step 2: pull out the poll from couchdb that the user requested
+    // poll = the poll id they requested
+    database.retrieve(poll) {
+        doc, error in
+        defer { next() }
+        
+        if let error = error {
+            // something wrong - couldnt get poll from database . poll not found
+            let errorMsg = error.localizedDescription
+            let status = ["status": "error",
+                          "message": errorMsg]
+            let result = ["result" : status]
+            let json = JSON(result)
+            
+            response.status(.notFound).send(json: json)
+            
+            next()
+        } else if let doc = doc {
+            // update document in couch db with new poll vote
+            // now doc = the couchdb document of tha tone poll the user wants to ote on
+            // doc = a swiftyjson object
+            
+            // make a copy of doc, add one to the relevant poll vote, save it again to couchdb
+            let id = doc["_id"].stringValue
+            let rev = doc["_rev"].stringValue
+            
+            var newDocument = doc
+            if option == "1" {
+                newDocument["votes1"].intValue += 1
+            } else if option == "2" {
+                newDocument["votes2"].intValue += 1
+            }
+            
+            // now we need to update the couchdb doc with this new doc
+            database.update(id, rev: rev, document: newDocument) {
+                rev, doc, error in
+                
+                // we eget back new rev number, updated json doc, and error code
+                defer { next() }
+                
+                if let error = error {
+                    let status = ["status": "error"]
+                    let result = ["result": status]
+                    let json = JSON(result)
+                    
+                    response.status(.conflict).send(json: json)
+                } else {
+                    let status = ["status": "ok"]
+                    let result = ["result": status]
+                    let json = JSON(result)
+                    response.status(.OK).send(json: json)
+                }
+            }
+            
+        }
+    }
+    
     defer { next() }
 }
 
