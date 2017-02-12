@@ -8,6 +8,5 @@
 
 #### Routes
 1. `http://localhost:8090/polls/list` - GET request to list all polls
-2. `` - POST request to create a new poll
-3. `` - POST request to vote on an existing poll
-4. `` - DELETE request to delete a poll from database
+2. `http://localhost:8090/polls/create` - POST request to create a new poll
+3. `http://localhost:8090/polls/vote/:pollid/:option` - POST request to vote on an existing poll

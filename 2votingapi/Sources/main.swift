@@ -249,5 +249,25 @@ router.post("/polls/vote/:pollid/:option") {
     defer { next() }
 }
 
+// delete a poll from couch DB
+router.delete("/polls/delete/:pollid") {
+    request, response, next in
+    
+    defer { next() }
+    
+    guard let pollID = request.parameters["pollid"] else {
+        try response.status(.badRequest).end()
+        return
+    }
+    
+    // now we have the poll id they want to delete
+    // retrieve the document for the poll id so that we can get the revision
+    
+    
+    // we now have document
+    
+    
+}
+
 Kitura.addHTTPServer(onPort: 8090, with: router)
 Kitura.run()
