@@ -14,10 +14,10 @@
 	* **Description:** going deeper into Kitura's router capabilities
 	* **Outcomes:** route chaining (variadic approach), route chaining (multiple HTTP methods route() approach), different ways to read user data (url params with get, url encoded form with post, url encoded with get, json with post), routing regular expressions
 	* **[Code](https://github.com/surayashivji/KituraProgress/tree/master/3routing)**
-4. 
+4. Forum
 	* **Description:** 
 	* **Outcomes:** 
-	* **[Code](https://github.com/surayashivji/KituraProgress/tree/master/4)**
+	* **[Code](https://github.com/surayashivji/KituraProgress/tree/master/4forum)**
 
 ## Credits
 * [Kitura](https://github.com/IBM-Swift/Kitura) - IBM's Swift web framework and HTTP server.
