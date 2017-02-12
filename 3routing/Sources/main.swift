@@ -132,8 +132,23 @@ router.post("/messages/create") {
         response.send("Provide a title.")
     }
     next()
+}
 
-
+// REGEX use groups to capture regex since technically Kitura does it automatically
+// match routes such as "/search/2016/Usc"
+// search/numbers 0 - 9 /one or more letters case insensitive
+// stored in request params like any other url params
+// regular expressions built into kitura router
+router.get("/search/([0-9]+)/([A-Za-z]+)") {
+    
+    request, response, next in
+    
+    defer { next() }
+    
+    guard let year = request.parameters["0"] else { return }// first regex position in URL
+    guard let string = request.parameters["1"] else { return }
+    
+     response.send("You searched for \(string) in \(year)")
 }
 
 // decode HTML forms
