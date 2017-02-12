@@ -10,6 +10,14 @@
 	* **Description:** system that allows users to make topics to vote on and cast their own votes.
 	* **Outcomes:** building an API with Swift, learning to use CouchDB, understanding the concepts behind many typical Swift features, interfacing API from front end, techniques for blocking SQL injection / dealing with URL encoding
 	* **[Code](https://github.com/surayashivji/KituraProgress/tree/master/2votingapi)**
+3. Routing Practice
+	* **Description:** going deeper into Kitura's router capabilities
+	* **Outcomes:** route chaining (variadic approach), route chaining (multiple HTTP methods route() approach), different ways to read user data (url params with get, url encoded form with post, url encoded with get, json with post), routing regular expressions
+	* **[Code](https://github.com/surayashivji/KituraProgress/tree/master/3routing)**
+4. 
+	* **Description:** 
+	* **Outcomes:** 
+	* **[Code](https://github.com/surayashivji/KituraProgress/tree/master/4)**
 
 ## Credits
 * [Kitura](https://github.com/IBM-Swift/Kitura) - IBM's Swift web framework and HTTP server.
