@@ -3,7 +3,7 @@
 
 ## Projects
 1. Starter Site
-	* **Description:** Simple site that has dummy pages for the home, contact, and staff
+	* **Description:** simple site that has dummy pages for the home, contact, and staff
 	* **Outcomes:** setting up the server, integrating Kitura with project, using the swift package manager, templating in Swift, logging
 	* **[Code](https://github.com/surayashivji/KituraProgress/tree/master/1basicsite)**
 2. VotingAPI
@@ -16,7 +16,7 @@
 	* **[Code](https://github.com/surayashivji/KituraProgress/tree/master/3routing)**
 4. Forum
 	* **Description:** 
-	* **Outcomes:** 
+	* **Outcomes:** querying couchdb, integrating javascript views with Swift
 	* **[Code](https://github.com/surayashivji/KituraProgress/tree/master/4forum)**
 
 ## Credits
@@ -25,3 +25,4 @@
 * [Stencil](https://github.com/IBM-Swift/Kitura-StencilTemplateEngine) - templating language for Swift.
 * [CouchDB](https://github.com/IBM-Swift/Kitura-CouchDB) - NoSQL database
 * [Bootstrap](http://getbootstrap.com/) - CSS
+* [Kitura-Sessions](https://github.com/IBM-Swift/Kitura-Session) - Track logged in users
