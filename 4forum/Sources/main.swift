@@ -14,6 +14,13 @@ func send(error: String, code: HTTPStatusCode, to response: RouterResponse) {
     _ = try? response.status(code).send(error).end()
 }
 
+// maintain sessions
+func context(for request: RouterRequest) -> [String: Any] {
+    var result = [String: String]()
+    result["username"] = "testing"
+    return result
+}
+
 HeliumLogger.use()
 
 let connectionProperties = ConnectionProperties(host: "localhost", port: 5984, secured: false)
@@ -44,6 +51,9 @@ router.get("/") {
                                 send(error: error.localizedDescription, code: .internalServerError, to: response)
                             } else if let forums = forums {
                                 // success
+                                var forumContext = context(for: request)
+                                forumContext["forums"] = forums["rows"].arrayObject // convert SwiftyJSON to array to give to template
+                                _ = try? response.render("home", context: forumContext)
                             }
     }
 }
