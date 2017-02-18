@@ -6,7 +6,7 @@
 {% block body %}
 <h1>Development Topics</h1>
 
-{% if username  %}
+{% if username %}
 <p>Welcome back, {{ username }}!</p>
 
 <form action="/users/logout" method="post">

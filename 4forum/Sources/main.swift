@@ -311,7 +311,18 @@ router.post("/users/create") {
                 
                 if let doc = doc {
                     // user created!
-                    response.send("OK!")
+//                    response.send("OK!")
+                    
+////                    // save username to user's session  (as if user just logged in)
+//                    Log.info(id ?? "nothing in ID")
+//                    Log.info("HEY \n")
+                    request.session!["username"].string = id
+//                    Log.info( request.session!["username"].string ?? "ugh")
+//                    Log.info("OK")
+//
+                    // redirect back to home page
+                    _ = try? response.redirect("/")
+                    
                 } else {
                     // error
                     send(error: "User couldnt be created", code: .internalServerError, to: response)
