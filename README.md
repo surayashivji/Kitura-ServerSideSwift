@@ -16,7 +16,7 @@
 	* **[Code](https://github.com/surayashivji/KituraProgress/tree/master/3routing)**
 4. Forum
 	* **Description:** 
-	* **Outcomes:** querying couchdb, integrating javascript views with Swift, custom stencil filters 
+	* **Outcomes:** querying couchdb, integrating javascript views with Swift, custom stencil filters, user credentials, sessions, encryption (hashing, salting, rounds)
 	* **[Code](https://github.com/surayashivji/KituraProgress/tree/master/4forum)**
 5. Name
 	* **Description:** 
