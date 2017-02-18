@@ -249,5 +249,81 @@ router.post("/users/login") {
     }
 }
 
+// signup users
+router.get("/users/create") {
+    request, response, next in
+    
+    defer { next() }
+    
+    try response.render("signup", context: [:])
+}
+
+// POST - signup users
+// STEPS
+// 1 - use getPosts() to ensure something was submitted for username/password
+// 2 - check if username already exists in couchdb (no duplicates)
+// 3 - create new user document in couchdb
+// 4 - send error if we cant create new doc
+router.post("/users/create") {
+    request, response, next in
+    defer { next() }
+    
+    guard let fields = getPost(for: request, fields: ["username", "password"]) else {
+        send(error: "Missing required fields", code: .badRequest, to: response)
+        return
+    }
+    
+    // check if exists already
+    database.retrieve(fields["username"]!) { docs, error in
+        if let error = error {
+            // user name does not exist --> generate salt and add new user
+            
+            var newUser = [String: String]()
+            
+            // make sure CouchDB ID is username
+            newUser["_id"] = fields["username"]
+            
+            // add type so view can filter by type
+            newUser["type"] = "user"
+            
+            let saltString: String
+            
+            // create salt - generate random data suitable fora salt
+            if let salt = try? Random.generate(byteCount: 64) {
+                saltString = CryptoUtils.hexString(from: salt)
+            } else {
+                // emergency fallback!    
+                saltString = (fields["username"]! + fields["password"]! + "gotrojans").digest(using: .sha512)
+            }
+            
+            // store salt in database so that we can rehash the password on login
+            newUser["salt"] = saltString
+            
+            // calculate password hash for user
+            newUser["password"] = password(from: fields["password"]!, salt: saltString)
+            
+            let newUserJSON = JSON(newUser)
+            
+            // send new user JSON to couchDB!
+            
+            database.create(newUserJSON) { id, revision, doc, error in
+                defer { next() }
+                
+                if let doc = doc {
+                    // user created!
+                    response.send("OK!")
+                } else {
+                    // error
+                    send(error: "User couldnt be created", code: .internalServerError, to: response)
+                }
+            }
+            
+        } else {
+            // username alreadye exists
+            send(error: "User already exists", code: .badRequest, to: response)
+        }
+    }
+}
+
 Kitura.addHTTPServer(onPort: 8090, with: router)
 Kitura.run()

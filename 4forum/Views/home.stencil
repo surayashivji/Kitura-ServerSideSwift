@@ -16,7 +16,7 @@
 </ul>
 
 {% else %}
-<a href="/users/login">Please log in.</a>
+<a href="/users/login">Please log in</a> <p>OR</p> <a href="/users/create">Please Sign Up</a>
 {% endif %}
 
 {% endblock %}
