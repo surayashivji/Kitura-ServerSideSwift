@@ -292,7 +292,7 @@ router.post("/users/create") {
             if let salt = try? Random.generate(byteCount: 64) {
                 saltString = CryptoUtils.hexString(from: salt)
             } else {
-                // emergency fallback!    
+                // emergency fallback!
                 saltString = (fields["username"]! + fields["password"]! + "gotrojans").digest(using: .sha512)
             }
             
@@ -324,6 +324,74 @@ router.post("/users/create") {
         }
     }
 }
+
+router.post("/forum/:forumid/:messageid?") {
+    request, response, next in
+    
+    guard let forumID = request.parameters["forumid"] else {
+        try response.status(.badRequest).end()
+        return
+    }
+    
+    guard let username = request.session?["username"].string else {
+        send(error: "You are not logged in", code: .forbidden, to: response)
+        return
+    }
+    
+    guard let fields = getPost(for: request, fields: ["title", "body"]) else {
+        send(error: "Missing required fields for post submission!!", code: .badRequest, to: response)
+        return
+    }
+    
+    // now we have a forumid, user is logged in, and know the user submitted a title and body
+    
+    var newMessage = [String: String]()
+    newMessage["body"] = fields["body"]!
+    
+    // add the current date in the correct format
+    let formatter = DateFormatter()
+    formatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ssZ"
+    newMessage["date"] = formatter.string(from: Date())
+    
+    // mark the message as belonging to the current forum
+    newMessage["forum"] = forumID
+    
+    
+    // if replying to a message, use its ID as our parent
+    if let messageID = request.parameters["messageid"] {
+        newMessage["parent"] = messageID
+    } else {
+        // this is a top-level post, so it has no parent
+        newMessage["parent"] = ""
+    }
+    // title for the reply to message  isj ust "Reply" (hidden value)
+    newMessage["title"] = fields["title"]!
+    
+    // username value unwrapped from the session
+    newMessage["user"] = username
+    
+    // mark  document as a message - views work
+    newMessage["type"] = "message"
+    
+    // convert dictionary to JSON send it off to CouchDB
+    let newMessageJSON = JSON(newMessage)
+    
+    database.create(newMessageJSON) { id, revision, doc, error in
+        defer { next() }
+        if let error = error {
+            send(error: "Message couldnt be made", code: .internalServerError, to: response)
+        } else if let id = id {
+            if newMessage["parent"]! == "" {
+                // load forum post
+                _ = try? response.redirect("/forum/\(forumID)/\(id)")
+            } else {
+                // this was a reply
+                _ = try? response.redirect("/forum/\(forumID)/\(newMessage["parent"]!)")
+            }
+        }
+    }
+}
+
 
 Kitura.addHTTPServer(onPort: 8090, with: router)
 Kitura.run()
