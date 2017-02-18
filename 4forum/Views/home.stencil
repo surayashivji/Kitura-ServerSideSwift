@@ -9,6 +9,10 @@
 {% if username  %}
 <p>Welcome back, {{ username }}!</p>
 
+<form action="/users/logout" method="post">
+<input type="submit" class="btn btn-lg" value="logout"/></p>
+</form><br><br>
+
 <ul>
 {% for forum in forums %}
 <li><a href="/forum/{{ forum.value._id }}">{{ forum.value.name }}</a></li>

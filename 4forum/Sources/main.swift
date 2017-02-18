@@ -392,6 +392,25 @@ router.post("/forum/:forumid/:messageid?") {
     }
 }
 
+router.post("/users/logout") {
+    request, response, next in
+    
+    defer { next() }
+    
+    // destroy session data
+    request.session?.destroy() {
+        (error: NSError?) in
+        if let error = error {
+            send(error: "Could not logout", code: .internalServerError, to: response)
+
+        }
+    }
+//    try response.send("Successfully logged user out").end()
+    // redirect to home page ("/")
+    _ = try? response.redirect("/")
+    
+}
+
 
 Kitura.addHTTPServer(onPort: 8090, with: router)
 Kitura.run()
