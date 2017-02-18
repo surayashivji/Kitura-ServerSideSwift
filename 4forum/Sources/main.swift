@@ -2,6 +2,7 @@ import CouchDB
 import Cryptor//encryption
 import Foundation
 import HeliumLogger
+import Stencil
 import Kitura
 import KituraNet//http status codes
 import KituraSession//read/write user sessions
@@ -28,7 +29,23 @@ let client = CouchDBClient(connectionProperties: connectionProperties)
 let database = client.database("forum")
 
 let router = Router()
-router.setDefault(templateEngine: StencilTemplateEngine())
+//router.setDefault(templateEngine: StencilTemplateEngine())
+let namespace = Namespace()
+// custom filter - formatting date
+namespace.registerFilter("format_date") { (value: Any?) in
+    if let value = value as? String {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ssZ"
+        if let date = formatter.date(from: value) {
+            formatter.dateStyle = .long
+            formatter.timeStyle = .medium
+            return formatter.string(from: date)
+        }
+    }
+    return value
+}
+router.setDefault(templateEngine: StencilTemplateEngine(namespace: namespace))
+
 router.post("/", middleware: BodyParser())
 // StaticFileServer() : serves static files (html, css, js, images, etc)
 // middleware
