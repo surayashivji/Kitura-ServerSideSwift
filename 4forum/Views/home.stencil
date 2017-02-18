@@ -11,9 +11,7 @@
 
 <ul>
 {% for forum in forums %}
-<li><a href="/forum/ {{ forum.value._id }}">
-{{ forum.value.name }}
-</a></li>
+<li><a href="/forum/{{ forum.value._id }}">{{ forum.value.name }}</a></li>
 {% endfor %}
 </ul>
 

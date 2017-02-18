@@ -52,9 +52,40 @@ router.get("/") {
                             } else if let forums = forums {
                                 // success
                                 var forumContext = context(for: request)
+                                // render all the forums
                                 forumContext["forums"] = forums["rows"].arrayObject // convert SwiftyJSON to array to give to template
                                 _ = try? response.render("home", context: forumContext)
                             }
+    }
+}
+
+router.get("/forum/:forumid") {
+    request, response, next in
+    
+    guard let forumID = request.parameters["forumid"] else {
+        send(error: "Missing Forum ID", code: .badRequest, to: response)
+        return
+    }
+    
+    database.retrieve(forumID) { forum, error in
+        if let error = error {
+            send(error: error.localizedDescription, code: .notFound, to: response)
+        } else if let forum = forum {
+            database.queryByView("forum_posts", ofDesign: "forum", usingParameters: [.keys([forumID as Database.KeyType]), .descending(true)]) { messages, error in
+                defer { next() }
+                
+                if let error = error {
+                    send(error: error.localizedDescription, code: .internalServerError, to: response)
+                } else if let messages = messages {
+                    var pageContext = context(for: request)
+                    pageContext["forum_id"] = forum["_id"].stringValue
+                    pageContext["forum_name"] = forum["name"].stringValue
+                    pageContext["messages"] = messages["rows"].arrayObject
+                    
+                    _ = try? response.render("forum", context: pageContext)
+                }
+            }
+        }
     }
 }
 
