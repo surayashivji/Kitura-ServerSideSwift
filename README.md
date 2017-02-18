@@ -16,8 +16,12 @@
 	* **[Code](https://github.com/surayashivji/KituraProgress/tree/master/3routing)**
 4. Forum
 	* **Description:** 
-	* **Outcomes:** querying couchdb, integrating javascript views with Swift
+	* **Outcomes:** querying couchdb, integrating javascript views with Swift, custom stencil filters 
 	* **[Code](https://github.com/surayashivji/KituraProgress/tree/master/4forum)**
+5. Name
+	* **Description:** 
+	* **Outcomes:** 
+	* **[Code](https://github.com/surayashivji/KituraProgress/tree/master/5)**
 
 ## Credits
 * [Kitura](https://github.com/IBM-Swift/Kitura) - IBM's Swift web framework and HTTP server.
@@ -25,4 +29,4 @@
 * [Stencil](https://github.com/IBM-Swift/Kitura-StencilTemplateEngine) - templating language for Swift.
 * [CouchDB](https://github.com/IBM-Swift/Kitura-CouchDB) - NoSQL database
 * [Bootstrap](http://getbootstrap.com/) - CSS
-* [Kitura-Sessions](https://github.com/IBM-Swift/Kitura-Session) - Track logged in users
+* [Kitura-Sessions](https://github.com/IBM-Swift/Kitura-Session) - Track user sessions

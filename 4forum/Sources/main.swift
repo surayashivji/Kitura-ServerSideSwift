@@ -60,6 +60,7 @@ router.get("/") {
     // design document is called forum
     
     // queryByView -- result of this is stored in couchdb
+    // OF DESIGN -- design document where the view is (forum on couchdb)
     database.queryByView("forums", ofDesign: "forum",
                          usingParameters: []) { forums, error in
                             
@@ -100,6 +101,45 @@ router.get("/forum/:forumid") {
                     pageContext["messages"] = messages["rows"].arrayObject
                     
                     _ = try? response.render("forum", context: pageContext)
+                }
+            }
+        }
+    }
+}
+
+
+router.get("/forum/:forumid/:messageid") {
+    request, response, next in
+    
+    guard let forumID = request.parameters["forumid"],
+        let messageID = request.parameters["messageid"] else {
+            try response.status(.badRequest).end()
+            return
+    }
+    
+    database.retrieve(forumID) { forum, error in
+        if let error = error {
+            send(error: error.localizedDescription, code: .notFound, to: response)
+        } else if let forum = forum {
+            database.retrieve(messageID) { message, error in
+                if let error = error {
+                    send(error: error.localizedDescription, code: .notFound, to: response)
+                } else if let message = message {
+                    database.queryByView("forum_replies", ofDesign: "forum", usingParameters: [.keys([messageID as Database.KeyType])]) { replies, error in
+                        defer { next() }
+                        
+                        if let error = error {
+                            send(error: error.localizedDescription, code: .internalServerError, to: response)
+                        } else if let replies = replies {
+                            var pageContext = context(for: request)
+                            pageContext["forum_id"] = forum["_id"].stringValue
+                            pageContext["forum_name"] = forum["name"].stringValue
+                            pageContext["message"] = message.dictionaryObject!
+                            pageContext["replies"] = replies["rows"].arrayObject
+                            
+                            _ = try? response.render("message", context: pageContext)
+                        }
+                    }
                 }
             }
         }
