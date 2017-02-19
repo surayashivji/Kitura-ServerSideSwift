@@ -15,7 +15,7 @@
 	* **Outcomes:** route chaining (variadic approach), route chaining (multiple HTTP methods route() approach), different ways to read user data (url params with get, url encoded form with post, url encoded with get, json with post), routing regular expressions
 	* **[Code](https://github.com/surayashivji/KituraProgress/tree/master/3routing)**
 4. Forum
-	* **Description:** 
+	* **Description:** Forum where people can signup/login and reply to forums with posts / subsequent replies. 
 	* **Outcomes:** querying couchdb, integrating javascript views with Swift, custom stencil filters, user credentials, sessions, encryption (hashing, salting, rounds)
 	* **[Code](https://github.com/surayashivji/KituraProgress/tree/master/4forum)**
 5. Name

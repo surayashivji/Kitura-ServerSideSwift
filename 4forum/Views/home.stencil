@@ -4,7 +4,7 @@
 {% block title %}Home{% endblock %}
 
 {% block body %}
-<h1>Development Topics</h1>
+<h2>Forum!</h2>
 
 {% if username %}
 <p>Welcome back, {{ username }}!</p>
