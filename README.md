@@ -18,10 +18,14 @@
 	* **Description:** Forum where people can signup/login and reply to forums with posts / subsequent replies. 
 	* **Outcomes:** querying couchdb, integrating javascript views with Swift, custom stencil filters, user credentials, sessions, encryption (hashing, salting, rounds)
 	* **[Code](https://github.com/surayashivji/KituraProgress/tree/master/4forum)**
-5. Name
+5. Upload / Download Images
+	* **Description:** Simple website that allows users to upload images and view them
+	* **Outcomes:** navigating file system, uploading images, displaying images from file system
+	* **[Code](https://github.com/surayashivji/KituraProgress/tree/master/5imagedownloads)**
+6. Name
 	* **Description:** 
 	* **Outcomes:** 
-	* **[Code](https://github.com/surayashivji/KituraProgress/tree/master/5)**
+	* **[Code](https://github.com/surayashivji/KituraProgress/tree/master/6)**
 
 ## Credits
 * [Kitura](https://github.com/IBM-Swift/Kitura) - IBM's Swift web framework and HTTP server.
@@ -30,3 +34,4 @@
 * [CouchDB](https://github.com/IBM-Swift/Kitura-CouchDB) - NoSQL database
 * [Bootstrap](http://getbootstrap.com/) - CSS
 * [Kitura-Sessions](https://github.com/IBM-Swift/Kitura-Session) - Track user sessions
+* [Swift GD](https://github.com/twostraws/SwiftGD) - Resize images
