@@ -23,10 +23,14 @@
 	* **Outcomes:** navigating file system, uploading images, displaying images from file system
 	* **[Code](https://github.com/surayashivji/KituraProgress/tree/master/5imagedownloads)**
 6. More about Templating
-	* **Description:** 
-	* **Outcomes:** 
+	* **Description:** going deeper into capabilities of stencil templating
+	* **Outcomes:** custom filters/tags for templates
 	* **[Code](https://github.com/surayashivji/KituraProgress/tree/master/6templates)**
-
+7. Microblogging Service Backend
+	* **Description:** Backend for a microblogging serve (like Twitter)
+	* **Outcomes:** Using SQL with Kitura directly
+	* **[Code](https://github.com/surayashivji/KituraProgress/tree/master/7microbackend)**
+	
 ## Credits
 * [Kitura](https://github.com/IBM-Swift/Kitura) - IBM's Swift web framework and HTTP server.
 * [Helium Logger](https://github.com/IBM-Swift/HeliumLogger) - lightweight logging framework for Swift.
