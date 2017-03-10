@@ -22,10 +22,10 @@
 	* **Description:** Simple website that allows users to upload images and view them
 	* **Outcomes:** navigating file system, uploading images, displaying images from file system
 	* **[Code](https://github.com/surayashivji/KituraProgress/tree/master/5imagedownloads)**
-6. Name
+6. More about Templating
 	* **Description:** 
 	* **Outcomes:** 
-	* **[Code](https://github.com/surayashivji/KituraProgress/tree/master/6)**
+	* **[Code](https://github.com/surayashivji/KituraProgress/tree/master/6templates)**
 
 ## Credits
 * [Kitura](https://github.com/IBM-Swift/Kitura) - IBM's Swift web framework and HTTP server.
