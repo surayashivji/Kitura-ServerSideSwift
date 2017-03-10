@@ -1,0 +1,52 @@
+<html>
+<body>
+
+{% if talk %}
+<p>Hello {{ talk }}!</p>
+{% endif %}
+
+{% if haters %}
+<p><p>Hello {{ haters }}!</p></p>
+{% endif %}
+
+{% if names %}
+<h1>Names:</h1>
+<ul>
+{% for name in names %}
+
+    {% if forloop.first %}
+        <li>The first name is {{ name }}</li>
+    {% else %}
+        {% if forloop.last %}
+            <li>The last name is {{ name }}</li>
+        {% else %}
+            <li>Name number {{ forloop.counter }} is {{ name|filter }} </li>
+        {% endif %}
+    {% endif %}
+{% endfor %}
+</ul>
+<div style="color:blue">
+<p> there are {{names.count}} names here</p>
+<p> The first name is {{names.first}} </p>
+<p> Last name is {{names.last}} </p>
+<p> the 2nd name is {{names.1}} </p>
+</div>
+{% endif %}
+
+{% for h in hampsters %}
+<li> {{ h }} </li>
+{% empty %}
+<li>no hampster :(</li>
+{% endfor %}
+
+{# Here is a stencil comment :) #}
+
+{% debug %}
+<br><br>
+{% autoescape %}
+<h1> This is a test </h1>
+{% endautoescape %}
+<h1> This is a test </h1>
+
+</body>
+</html>

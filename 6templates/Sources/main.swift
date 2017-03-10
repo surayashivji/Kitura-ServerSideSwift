@@ -10,7 +10,22 @@ let namespace = Namespace()
 
 // custom namespace code
 
-router.setDefault(templateEngine: StencilTemplteEngine(namespace: namespace))
+// reverse string namespace
+namespace.registerFilter("reverse") { (value: Any?) in
+    guard let unwrapped = value as? String else { return value }
+    return String(unwrapped.characters.reversed())
+}
+
+// register Simple Tag lets u work with tags that dont manipulate content 
+// print all contentes of a context passed to a template
+namespace.registerSimpleTag("debug") { context in
+    return String(describing: context.flatten())
+}
+
+namespace.registerTag("autoescape", parser:
+AutoescapeNode.parse)
+
+router.setDefault(templateEngine: StencilTemplateEngine(namespace: namespace))
 
 router.get("/") {
     request, response, next in
