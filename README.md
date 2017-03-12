@@ -28,7 +28,7 @@
 	* **[Code](https://github.com/surayashivji/KituraProgress/tree/master/6templates)**
 7. Microblogging Service Backend
 	* **Description:** Backend for a microblogging serve (like Twitter)
-	* **Outcomes:** Using SQL with Kitura directly
+	* **Outcomes:** Using SQL with Kitura directly, building a token auth system (authentication for client apps to securely authenticate)
 	* **[Code](https://github.com/surayashivji/KituraProgress/tree/master/7microbackend)**
 	
 ## Credits
@@ -39,3 +39,4 @@
 * [Bootstrap](http://getbootstrap.com/) - CSS
 * [Kitura-Sessions](https://github.com/IBM-Swift/Kitura-Session) - Track user sessions
 * [Swift GD](https://github.com/twostraws/SwiftGD) - Resize images
+* [Vapor](https://github.com/vapor/vapor) - SSS Framework
