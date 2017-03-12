@@ -162,6 +162,101 @@ router.post("/login") {
      }
 }
 
+router.post("/post/:reply?") {
+    request, response, next in
+    
+    defer { next() }
+    
+    // ensure two fields exist (post content, session)
+    guard let fields = getPost(for: request, fields: ["token", "message"]) else {
+        _ = try? response.status(.badRequest).send("Missing required fields").end()
+        return
+    }
+    
+    // use reply value from url or set default value for it
+    let replyTo: String
+    
+    if let reply = request.parameters["reply"] {
+        replyTo = reply
+    } else {
+        replyTo = ""
+    }
+    
+    //connect to mysql
+    let (db, connection) = try connectToDatabase()
+    
+    //check we're using valid token
+    let query = "SELECT `user` FROM `tokens` WHERE `uuid` = ?"
+    
+    let users = try db.execute(query, [fields["token"]!], connection)
+    
+    guard let username = users.first?["user"]?.string else { return }
+    
+    //insert new post for user
+    let writeQuery = "INSERT INTO `posts` (user, message, parent, date) VALUES (?, ?, ?, NOW())"
+    try db.execute(writeQuery, [username, fields["message"]!, Int(replyTo) ?? 0], connection)
+    
+    // pull out the ID of the post put in db
+    let lastInsertID = try db.execute("SELECT LAST_INSERT_ID() as `id`;", [], connection)
+    guard let insertID = lastInsertID.first?["id"]?.string else { return }
+    
+    // send result back to client
+    var result = [String: Any]()
+    result["status"] = "ok"
+    result["id"] = insertID
+    
+    let json = JSON(result)
+    
+    do {
+        try response.status(.OK).send(json: json).end()
+    } catch {
+        Log.warning("Failed to send /post for \(username): \(error.localizedDescription)")
+    }
+}
+//http://localhost:8090/search?text=pet
+router.get("/search") {
+    request, response, next in
+    defer { next() }
+    
+    guard let searchTerm = request.queryParameters["text"] else { return }
+    
+    let searchFuz = "%\(searchTerm)%"
+    
+    //connect mysql
+    let (db, connection) = try connectToDatabase()
+    
+    //run query with search param
+    let query = "SELECT `id`, `message`, `user`, `date` FROM `posts` WHERE `message` LIKE ? ORDER BY `date`;"
+    
+    let posts = try db.execute(query, [searchFuz], connection)
+    
+    //convert result to dictionaries
+    
+    var parsedPosts = [[String: Any]]() //array of dicts
+    
+    for post in posts {
+        var postDictionary = [String:Any]()
+        postDictionary["id"] = post["id"]?.int
+        postDictionary["user"] = post["user"]?.string
+        postDictionary["message"] = post["message"]?.string
+        postDictionary["date"] = post["date"]?.string
+        
+        parsedPosts.append(postDictionary) // each post is a dictionary from the posts array
+    }
+    
+    var result = [String: Any]()
+    result["status"] = "ok"
+    result["posts"] = parsedPosts
+    
+    let json = JSON(result)
+    
+    // render json
+    do {
+        try response.status(.OK).send(json: json).end()
+    } catch {
+        Log.warning("Failed to send search for \(searchTerm)")
+    }
+}
 
 Kitura.addHTTPServer(onPort: 8090, with: router)
 Kitura.run()

@@ -28,7 +28,7 @@
 	* **[Code](https://github.com/surayashivji/KituraProgress/tree/master/6templates)**
 7. Microblogging Service Backend
 	* **Description:** Backend for a microblogging serve (like Twitter)
-	* **Outcomes:** Using SQL with Kitura directly, building a token auth system (authentication for client apps to securely authenticate)
+	* **Outcomes:** Using SQL with Kitura directly, building a token auth system (authentication for client apps to securely authenticate), UUID auth
 	* **[Code](https://github.com/surayashivji/KituraProgress/tree/master/7microbackend)**
 	
 ## Credits

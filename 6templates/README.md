@@ -1,4 +1,4 @@
-## Project 5: More Templating 
+## Project 6: More templating
 
 ## Installation (MacOS)
 1. Clone Repository
