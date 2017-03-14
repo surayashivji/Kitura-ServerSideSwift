@@ -30,6 +30,13 @@
 	* **Description:** Backend for a microblogging serve (like Twitter)
 	* **Outcomes:** Using SQL with Kitura directly, building a token auth system (authentication for client apps to securely authenticate), UUID auth
 	* **[Code](https://github.com/surayashivji/KituraProgress/tree/master/7microbackend)**
+8. ASCII Art
+	* **Description:** ascii art generator
+	* **Outcomes:** 
+	* **[Code](https://github.com/surayashivji/KituraProgress/tree/master/8asciiart)**
+9. Database
+	* **Description / Outcomes:** going deeper into sql capabilities to build more complex databases/queries
+	* **[Code](https://github.com/surayashivji/KituraProgress/tree/master/9database)**
 	
 ## Credits
 * [Kitura](https://github.com/IBM-Swift/Kitura) - IBM's Swift web framework and HTTP server.

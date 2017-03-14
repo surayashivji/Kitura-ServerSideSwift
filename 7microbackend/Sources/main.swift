@@ -258,5 +258,7 @@ router.get("/search") {
     }
 }
 
+// extra followers/follow not implemeted
+
 Kitura.addHTTPServer(onPort: 8090, with: router)
 Kitura.run()
