@@ -58,7 +58,7 @@ router.get("/fetch") {
     // set image size and block size
     // block size : if its 1, it means 1 pixel to 1 ascii, if its 10 its asci / every 10 pixel
     let imageSize = image.size
-    let blockSize = 2 // draws every other character
+    let blockSize = 1 // draws every other character
     
     // 2d string array
     var rows = [[String]]()
@@ -75,14 +75,16 @@ router.get("/fetch") {
         // create new row
         // reserve enough capacity for all pixels!
         var row = [String]()
-        row.reserveCapacity(imageSize.width)
+        row.reserveCapacity(imageSize.width/blockSize)
         
         // loop over heihgt
         for x in stride(from: 0, to: imageSize.width, by: blockSize) {
 //            // get pixel @ current location
             let color = image.get(pixel: Point(x: x, y: y))
 //            /// figure out brightness of pixel
-            let brightness = color.redComponent + color.blueComponent + color.greenComponent
+            let brightness = (color.redComponent * 0.299) +
+                            (color.blueComponent * 0.114) +
+                            (color.greenComponent * 0.587)
 //             multiply by three so that it indexes match to asciiBlocks (0-9) and round
             let sum = Int(round(brightness * 3))
 //            // map brightness to an ascii character
