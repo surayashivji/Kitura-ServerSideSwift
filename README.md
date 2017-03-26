@@ -36,7 +36,7 @@
 	* **[Code](https://github.com/surayashivji/KituraProgress/tree/master/8asciiart)**
 9. Database
 	* **Description / Outcomes:** going deeper into sql capabilities to build more complex databases/queries
-	* **[Code](https://github.com/surayashivji/KituraProgress/tree/master/9database)**
+	* **[Code](https://github.com/surayashivji/KituraProgress/tree/master/9sql)**
 	
 ## Credits
 * [Kitura](https://github.com/IBM-Swift/Kitura) - IBM's Swift web framework and HTTP server.
