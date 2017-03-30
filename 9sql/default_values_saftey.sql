@@ -48,4 +48,5 @@ CREATE TABLE `users`
 	`password` VARCHAR(128) NOT NULL,
 	`salt` VARCHAR(128) NOT NULL
 	)
-	CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
