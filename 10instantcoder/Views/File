@@ -1,0 +1,11 @@
+{% extends master.stencil %}
+
+{% block title %} Welcome {% endblock %}
+
+{% block body %}
+
+<h1>We <3 Code !!</h1>
+
+
+
+{% endblock %}

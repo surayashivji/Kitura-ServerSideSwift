@@ -18,7 +18,6 @@ extension String {
     }
 }
 
-
 //error handling
 func send(error: String, code: HTTPStatusCode, to response: RouterResponse) {
     _ = try? response.status(code).send(error).end()
@@ -47,7 +46,14 @@ func getPost(for request: RouterRequest, fields: [String]) -> [String: String]? 
     return result
 }
 
-
+func context(for request: RouterRequest) -> [String: Any] {
+    var result = [String: Any]()
+    result["username"] = request.userProfile?.displayName // request.userProfile given to us by Kitura-Credentials
+    result["languages"] = ["C++", "C", "Java", "Swift", "Go", "JavaScript", "Objective-C", "Perl", "Python"]
+    return result
+}
+            
+             
 HeliumLogger.use()
 
 let router = Router()
@@ -79,6 +85,18 @@ credentials.options["failureRedirect"] = "/login/github"
 // step 3 - tell router to use credentials object for /projects and /signup route (/signup assumes github auth but no instantcoder login)
 router.all("/projects", middleware: credentials)
 router.all("/signup", middleware: credentials)
+
+// home page
+router.get("/") {
+    request, response, next in
+    
+    defer { next() }
+    
+    var pageContext = context(for: request)
+    pageContext["page_home"] = true
+    
+    try response.render("home", context: pageContext)
+}
 
 Kitura.addHTTPServer(onPort: 8090, with: router)
 Kitura.run()
