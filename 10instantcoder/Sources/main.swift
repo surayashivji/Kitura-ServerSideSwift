@@ -10,6 +10,12 @@ import KituraStencil
 import LoggerAPI
 import SwiftyJSON
 
+//couchdb connection code
+let connectionProperties = ConnectionProperties(host: "localhost", port: 5984, secured: false)
+let client = CouchDBClient(connectionProperties: connectionProperties)
+let database = client.database("instantcoder")
+
+
 // decode HTML forms
 extension String {
     func removeHTMLEncoding() -> String {
@@ -96,6 +102,60 @@ router.get("/") {
     pageContext["page_home"] = true
     
     try response.render("home", context: pageContext)
+}
+
+// GET and POST route for /signup --> user has authenticated with github but has not created an instant coder account
+router.get("/signup") {
+    request, response, next in
+    defer { next() }
+    
+    // guarantees that the user has authenticated using github (if not shouldnt b on this page)
+    guard let profile = request.userProfile else { return }
+    
+    var pageContext = context(for: request)
+    
+}
+
+router.post("/signup") {
+    request, response, next in
+    
+    defer { next() }
+    
+    // immediately exit if we're missing github auth details or a valid form submission (the programming language)
+    guard let profile = request.userProfile else { return }
+    guard let fields = getPost(for: request, fields: ["language"]) else { return }
+    
+    // check if the user ID already has an account    
+    database.retrieve(profile.id) { user, error in
+        if let error = error {
+            // user wasn't found!
+            
+            // fetch their full profile from GitHub          
+            let gitHubURL = URL(string: "http://api.github.com/ user/\(profile.id)")!
+            guard var gitHubProfile = try? Data(contentsOf: gitHubURL) else { return }
+            
+            // adjust it to fit the format we want: "_id" rather than "id", plus "type" and "language"
+            var gitHubJSON = JSON(data: gitHubProfile)
+            gitHubJSON["_id"].stringValue = gitHubJSON["id"].stringValue
+            _ = gitHubJSON.dictionaryObject?.removeValue(forKey: "id")
+            gitHubJSON["type"].stringValue = "coder"
+            gitHubJSON["language"].stringValue = fields["language"]!
+
+            database.create(gitHubJSON) { id, rev, doc, error in
+                if let doc = doc {
+                    // it worked! Activate their profile
+                    request.session?["gitHubProfile"] = gitHubJSON
+                }
+            }
+        } else if let user = user {
+            // user was found, so just log them in          
+            request.session?["gitHubProfile"] = user
+        }
+    }
+    
+    // redirect them to the logged-in homepage    
+    _ = try? response.redirect("/projects/mine").end()
+
 }
 
 Kitura.addHTTPServer(onPort: 8090, with: router)

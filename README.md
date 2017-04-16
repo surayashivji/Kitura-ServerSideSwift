@@ -37,9 +37,9 @@
 9. Database
 	* **Description / Outcomes:** going deeper into sql capabilities to build more complex databases/queries
 	* **[Code](https://github.com/surayashivji/KituraProgress/tree/master/9sql)**
-10. Name
+10. Instant Coder
 	* **Description / Outcomes:** 
-	* **[Code](https://github.com/surayashivji/KituraProgress/tree/master/10)**
+	* **[Code](https://github.com/surayashivji/KituraProgress/tree/master/10instantcoder)**
 	
 ## Credits
 * [Kitura](https://github.com/IBM-Swift/Kitura) - IBM's Swift web framework and HTTP server.
@@ -50,3 +50,4 @@
 * [Kitura-Sessions](https://github.com/IBM-Swift/Kitura-Session) - Track user sessions
 * [Swift GD](https://github.com/twostraws/SwiftGD) - Resize images
 * [Vapor](https://github.com/vapor/vapor) - SSS Framework
+* Kitura Credentials - authentication middleware service
